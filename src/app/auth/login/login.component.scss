@@ -1,0 +1,183 @@
+.login-wrapper {
+  display: flex;
+  max-height: 100vh;
+
+  .login-left, .login-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .login-left {
+    background-color: #fff;
+
+    // h2, h1 {
+    //   margin: 0.5rem 0;
+    // }
+
+    .login-card {
+      // background-color: #b23131;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 480px;
+      margin: 3rem auto;
+
+      // Tengahin semua isi login-card
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      justify-content: center;
+      align-items: center;         // ✅ ini yang bikin semua anak berada di tengah
+      text-align: center;
+
+      @media screen and (max-width: 480px) {
+        padding: 1.5rem;
+        margin: 1rem;
+      }
+
+      .header-login {
+        display: flex;
+        flex-direction: column; 
+        justify-content: center; 
+        text-align: center;  
+        
+        .icon-logo {
+          font-size: 64px;
+          height: 100%;
+          width: 100%;
+          padding-bottom: 16px;
+          // align-items: center;
+          // color: #000000; 
+        }
+      }
+  
+      .login-form {
+        background-color: #fff;
+        padding: 2rem;
+        width: 100%;
+        max-width: 400px;
+        // margin: 3rem auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        justify-content: center; 
+        text-align: center; 
+  
+        .form-field {
+          width: 100%;
+  
+          mat-form-field {
+            width: 100%;
+            background: #f9f9f9;
+            border-radius: 8px;
+  
+            .mat-form-field-outline {
+              border-color: #cfd8dc;
+            }
+  
+            .mat-form-field-wrapper {
+              padding: 0 0.75rem;
+            }
+  
+            input {
+              padding: 0 0;
+            }
+  
+            .no-bg-button {
+              background: transparent !important;
+              box-shadow: none !important;
+              border: none;
+              padding: 0 8px 0 0;   // ✅ kasih padding kanan
+              margin: 0;
+  
+              &:hover {
+                background: burlywood !important;
+              }
+  
+              &:focus {
+                background: transparent !important;
+              }
+            }
+          }
+        }
+  
+        .signin-btn {
+          width: 100%;
+          padding: 0.75rem;
+          border-radius: 8px;
+          border-width: 0cap;
+          font-weight: bold;
+          font-size: large;
+          background: linear-gradient(to right, #00bcd4, #3f51b5);
+          color: white;
+          transition: background 0.3s ease;
+          box-shadow: 0 3px 6px rgba(0, 188, 212, 0.3);
+  
+          &:hover {
+            background: linear-gradient(to right, #0097a7, #303f9f);
+          }
+  
+          &:disabled {
+            background: #ccc;
+          }
+        }
+  
+        @media screen and (max-width: 480px) {
+          padding: 1rem;
+          margin: 1rem;
+        }
+      }
+    }
+
+
+    h1 {
+    font-size: 48px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  // Responsive: layar kecil
+  @media screen and (max-width: 768px) {
+    h1 {
+      font-size: 36px;
+    }
+
+    h2 {
+      font-size: 20px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    h1 {
+      font-size: 28px;
+    }
+
+    h2 {
+      font-size: 18px;
+    }
+  }
+  }
+
+  .login-right {
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    img {
+      background:#00bcd4;
+      max-width: 100%;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+    @media screen and (max-width: 768px) {
+    display: none;
+  }
+  }
+}

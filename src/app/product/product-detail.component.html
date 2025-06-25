@@ -1,0 +1,106 @@
+<mat-toolbar>
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <span>Product Details</span>
+    </mat-toolbar>
+
+    <div class="container">
+      <app-loading *ngIf="isLoading"></app-loading>
+
+      <div *ngIf="!isLoading && product" class="product-detail">
+        <div class="product-images">
+          <div class="main-image">
+            <img [src]="selectedImage" [alt]="product.title" />
+          </div>
+          <div class="image-thumbnails" *ngIf="product.images.length > 1">
+            <img 
+              *ngFor="let image of product.images" 
+              [src]="image" 
+              [alt]="product.title"
+              [class.active]="selectedImage === image"
+              (click)="selectImage(image)" />
+          </div>
+        </div>
+
+        <div class="product-info">
+          <mat-card>
+            <mat-card-content>
+              <div class="product-header">
+                <h1>{{ product.title }}</h1>
+                <mat-chip-set>
+                  <mat-chip>{{ product.category }}</mat-chip>
+                  <mat-chip *ngIf="product.brand">{{ product.brand }}</mat-chip>
+                </mat-chip-set>
+              </div>
+
+              <div class="rating-section">
+                <app-rating [rating]="product.rating"></app-rating>
+                <span class="stock-info" [class.low-stock]="product.stock < 10">
+                  {{ product.stock }} in stock
+                </span>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <div class="price-section">
+                <div class="price-info">
+                  <span class="current-price">\${{ product.price }}</span>
+                  <span *ngIf="product.discountPercentage > 0" class="discount-badge">
+                    -{{ product.discountPercentage }}% OFF
+                  </span>
+                </div>
+                <span *ngIf="product.discountPercentage > 0" class="original-price">
+                  \${{ getOriginalPrice() }}
+                </span>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <div class="description-section">
+                <h3>Description</h3>
+                <p>{{ product.description }}</p>
+              </div>
+
+              <div class="actions-section">
+                <button mat-raised-button color="primary" class="action-btn">
+                  <mat-icon>add_shopping_cart</mat-icon>
+                  Add to Cart
+                </button>
+                <button mat-raised-button color="accent" class="action-btn">
+                  <mat-icon>favorite</mat-icon>
+                  Add to Wishlist
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <!-- Reviews Section -->
+  <div class="reviews-section" *ngIf="product.reviews?.length > 0">
+    <h3 class="review-title">Customer Reviews</h3>
+  
+    <mat-card *ngFor="let review of product?.reviews" class="review-card">
+      <mat-card-header>
+        <mat-card-title>{{ review.reviewerName }}</mat-card-title>
+        <mat-card-subtitle>{{ review.date | date:'mediumDate' }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <app-rating [rating]="review.rating"></app-rating>
+        <p class="comment">{{ review.comment }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+      </div>
+
+      <div *ngIf="!isLoading && !product" class="error-state">
+        <mat-icon>error_outline</mat-icon>
+        <h3>Product not found</h3>
+        <p>The product you're looking for doesn't exist or has been removed.</p>
+        <button mat-raised-button color="primary" (click)="goBack()">
+          Go Back
+        </button>
+      </div>
+
+
+
+    </div>

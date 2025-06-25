@@ -1,0 +1,96 @@
+<mat-toolbar color="primary">
+      <span>E-commerce Showcase</span>
+      <span class="spacer"></span>
+      <button mat-button [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+        {{ currentUser?.firstName }} {{ currentUser?.lastName }}
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+    </mat-menu>
+</mat-toolbar>
+<!-- <mat-form-field appearance="outline" class="full-width">
+<mat-label>Search</mat-label>
+<input matInput [(ngModel)]="searchQuery" placeholder="Search posts">
+</mat-form-field> -->
+
+<!-- <div class="search-bar">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search products</mat-label>
+    <input matInput [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Search here..." />
+    <button *ngIf="searchQuery" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div> -->
+
+    <div class="container">
+    
+
+     <div class="hero-section">
+        <div class="carousel-wrapper">
+            <div class="carousel-track" [style.transform]="'translateX(-' + currentImageIndex * 100 + '%)'">
+            <div class="carousel-item" *ngFor="let img of carouselImages">
+                <img [src]="img" alt="Carousel Image" />
+            </div>
+            </div>
+
+            <button class="nav prev" (click)="prevSlide()">
+            <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button class="nav next" (click)="nextSlide()">
+            <mat-icon>chevron_right</mat-icon>
+            </button>
+        </div>
+    </div>
+
+
+      <div class="products-section">
+        <div class="section-header">
+          <h2>Featured Products</h2>
+          <button mat-icon-button (click)="toggleView()">
+            <mat-icon>{{ isGridView ? 'view_list' : 'view_module' }}</mat-icon>
+          </button>
+        </div>
+
+        <app-loading *ngIf="isLoading"></app-loading>
+
+        <div *ngIf="!isLoading && products.length > 0" 
+             [class]="isGridView ? 'product-grid' : 'product-list'">
+          <mat-card *ngFor="let product of products" 
+                    class="product-card" 
+                    (click)="viewProduct(product.id)">
+            <div class="product-image" 
+                 [style.background-image]="'url(' + product.thumbnail + ')'">
+            </div>
+            <mat-card-content class="product-content">
+              <div class="product-info">
+                <h3>{{ product.title }}</h3>
+                <p class="product-description">{{ product.description | slice:0:100 }}...</p>
+                <app-rating [rating]="product.rating"></app-rating>
+              </div>
+              <div class="product-actions">
+                <div class="price-info">
+                  <span class="price">\${{ product.price }}</span>
+                  <span *ngIf="product.discountPercentage > 0" class="discount">
+                    -{{ product.discountPercentage }}%
+                  </span>
+                </div>
+                <button mat-raised-button color="primary" (click)="viewProduct(product.id); $event.stopPropagation()">
+                  View Details
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div *ngIf="!isLoading && products.length === 0" class="no-products">
+          <mat-icon>shopping_cart</mat-icon>
+          <h3>No products found</h3>
+          <p>Please try again later</p>
+        </div>
+      </div>
+    </div>
