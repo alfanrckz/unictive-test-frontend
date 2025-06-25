@@ -63,8 +63,12 @@
           <mat-card *ngFor="let product of products" 
                     class="product-card" 
                     (click)="viewProduct(product.id)">
-            <div class="product-image" 
+            <!-- <div class="product-image" 
                  [style.background-image]="'url(' + product.thumbnail + ')'">
+            </div> -->
+
+            <div class="product-image">
+                <img [src]="product.thumbnail" [alt]="product.title" />
             </div>
             <mat-card-content class="product-content">
               <div class="product-info">
