@@ -45,7 +45,7 @@
 
               <div class="price-section">
                 <div class="price-info">
-                  <span class="current-price">\${{ product.price }}</span>
+                  <span class="current-price">${{ product.price }}</span>
                   <span *ngIf="product.discountPercentage > 0" class="discount-badge">
                     -{{ product.discountPercentage }}% OFF
                   </span>
