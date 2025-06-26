@@ -92,21 +92,6 @@ isLoadingMore = false;
       (this.currentImageIndex - 1 + this.carouselImages.length) % this.carouselImages.length;
   }
 
-  // loadProducts(): void {
-  //   this.isLoading = true;
-  //   this.productService.getProducts().subscribe({
-  //     next: (response) => {
-  //       this.products = response.products;
-  //       this.filteredProducts = [...this.products];
-  //       this.isLoading = false;
-  //     },
-  //     error: (error) => {
-  //       console.error('Error loading products:', error);
-  //       this.notificationService.showError('Failed to load products');
-  //       this.isLoading = false;
-  //     }
-  //   });
-  // }
 
   loadProducts(initial = false): void {
   if (this.isLoadingMore || this.isEndOfList) return;
