@@ -17,6 +17,7 @@ import { Product } from '../shared/interfaces/product.interface';
 import { AuthService } from '../shared/services/auth.service';
 import { NotificationService } from '../shared/services/notification.service';
 import { ProductService } from '../shared/services/product.service';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @Component({
   selector: 'app-home',
@@ -36,7 +37,8 @@ import { ProductService } from '../shared/services/product.service';
     LoadingComponent,
     FormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    InfiniteScrollModule
   ]
 })
 export class HomeComponent implements OnInit {
@@ -58,6 +60,11 @@ export class HomeComponent implements OnInit {
   isGridView = true;
   currentUser = this.authService.getCurrentUser();
 
+  limit = 30;
+skip = 0;
+isEndOfList = false;
+isLoadingMore = false;
+
   constructor(
     private productService: ProductService,
     private authService: AuthService,
@@ -66,7 +73,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadProducts();
+    this.loadProducts(true);
     this.startCarousel();
   }
 
@@ -85,21 +92,67 @@ export class HomeComponent implements OnInit {
       (this.currentImageIndex - 1 + this.carouselImages.length) % this.carouselImages.length;
   }
 
-  loadProducts(): void {
-    this.isLoading = true;
-    this.productService.getProducts().subscribe({
-      next: (response) => {
-        this.products = response.products;
-        this.filteredProducts = [...this.products];
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error loading products:', error);
-        this.notificationService.showError('Failed to load products');
-        this.isLoading = false;
+  // loadProducts(): void {
+  //   this.isLoading = true;
+  //   this.productService.getProducts().subscribe({
+  //     next: (response) => {
+  //       this.products = response.products;
+  //       this.filteredProducts = [...this.products];
+  //       this.isLoading = false;
+  //     },
+  //     error: (error) => {
+  //       console.error('Error loading products:', error);
+  //       this.notificationService.showError('Failed to load products');
+  //       this.isLoading = false;
+  //     }
+  //   });
+  // }
+
+  loadProducts(initial = false): void {
+  if (this.isLoadingMore || this.isEndOfList) return;
+
+  this.isLoadingMore = true;
+  if (initial) this.isLoading = true;
+
+  this.productService.getProducts(this.limit, this.skip).subscribe({
+    next: (response) => {
+      const newProducts = response.products;
+      
+      if (initial) {
+        this.products = [...newProducts];
+      } else {
+        this.products = [...this.products, ...newProducts];
       }
-    });
+
+      this.filteredProducts = [...this.products];
+      this.skip += this.limit;
+
+      if (newProducts.length < this.limit) {
+        this.isEndOfList = true; // tidak ada data lagi
+      }
+
+      this.isLoading = false;
+      this.isLoadingMore = false;
+    },
+    error: (error) => {
+      console.error('Error loading products:', error);
+      this.notificationService.showError('Failed to load products');
+      this.isLoading = false;
+      this.isLoadingMore = false;
+    }
+  });
+}
+
+onScroll(): void {
+  const scrollPosition = window.innerHeight + window.scrollY;
+  const threshold = document.body.offsetHeight - 100; // ambil 100px sebelum ujung bawah
+
+  if (scrollPosition >= threshold) {
+    this.loadProducts(); // load more
   }
+}
+
+
 
   onSearch(): void {
   const query = this.searchQuery.toLowerCase().trim();

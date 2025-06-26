@@ -1,7 +1,5 @@
 <div class="login-wrapper">
   <div class="login-left">
-    <!-- <img src="https://cdn.pixabay.com/photo/2016/10/30/05/49/warehouse-1784098_960_720.jpg" /> -->
-    <!-- <button mat-stroked-button color="primary" class="signup-btn">Sign Up</button> -->
 
     <div class="login-card">
       <div class="header-login">
@@ -16,12 +14,9 @@
         <mat-label>Username</mat-label>
         <input matInput formControlName="username" placeholder="Enter username" />
         <mat-icon matPrefix>account_circle</mat-icon>
-        <!-- <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
-          Email is required
-        </mat-error> -->
-        <!-- <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
-          Invalid email
-        </mat-error> -->
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+              Username is required
+        </mat-error>
       </mat-form-field>
         </div>
   
