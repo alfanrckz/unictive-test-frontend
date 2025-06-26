@@ -18,7 +18,7 @@
       text-align: center;
       padding: 10px 0;
     //   max-height: 300px;
-    //   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    //   background: red;
       color: white;
       border-radius: 12px;
       margin-bottom: 10px;
@@ -173,15 +173,6 @@
       }
     }
 
-    .carousel-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 900px;
-    height: 500px;
-    margin: 0 auto;
-    overflow: hidden;
-    border-radius: 10px;
-    }
 
     .carousel-track {
     display: flex;
@@ -190,36 +181,99 @@
     }
 
     .carousel-item {
-    min-width: 100%;
-    box-sizing: border-box;
+        min-width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
     img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
         border-radius: 10px;
     }
     }
 
-    .nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 5;
-    background-color: rgba(0, 0, 0, 0.4);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  max-height: 350px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 10px;
+}
 
-    &.prev {
-        left: 10px;
-    }
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
 
-    &.next {
-        right: 10px;
-    }
-    }
+.nav.prev {
+  left: 10px;
+}
 
+.nav.next {
+  right: 10px;
+}
+
+/* Saat hover ke carousel, tombol muncul */
+.carousel-wrapper:hover .nav {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+    //search
+
+    .search-bar-sticky {
+        position: sticky; 
+        top: 64px;
+        z-index: 999;
+        background-color: #fff;
+        padding: 10px 0 0 0;
+        display: flex;
+        justify-content: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .search-field {
+        width: 100%;
+        max-width: 700px;
+        }
     
+        .spacer {
+  flex: 1 1 auto;
+}
+
+.toolbar-search {
+  width: 300px;
+  margin-right: 20px;
+  background: white;
+  border-radius: 4px;
+}
+
+.toolbar-search .mat-form-field-wrapper {
+  padding-bottom: 0px !important;
+}
+
+.toolbar-search .mat-form-field-flex {
+  height: 40px;
+  align-items: center;
+}

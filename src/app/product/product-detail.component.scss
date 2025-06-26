@@ -31,7 +31,7 @@
     .main-image img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
     }
 
     .image-thumbnails {
@@ -188,6 +188,9 @@
 
     .reviews-section {
   margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Tengah secara horizontal */
 }
 
 .review-title {
@@ -195,9 +198,12 @@
   font-weight: 500;
   margin-bottom: 20px;
   color: #333;
+  text-align: center;
 }
 
 .review-card {
+  width: 100%;
+  max-width: 600px;
   margin-bottom: 16px;
   border: 1px solid #e0e0e0;
 }

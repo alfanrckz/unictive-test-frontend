@@ -76,21 +76,21 @@
           </mat-card>
         </div>
         <!-- Reviews Section -->
-  <div class="reviews-section" *ngIf="product.reviews?.length > 0">
-    <h3 class="review-title">Customer Reviews</h3>
-  
-    <mat-card *ngFor="let review of product?.reviews" class="review-card">
-      <mat-card-header>
-        <mat-card-title>{{ review.reviewerName }}</mat-card-title>
-        <mat-card-subtitle>{{ review.date | date:'mediumDate' }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <app-rating [rating]="review.rating"></app-rating>
-        <p class="comment">{{ review.comment }}</p>
-      </mat-card-content>
-    </mat-card>
-  </div>
-      </div>
+        <div class="reviews-section" *ngIf="product.reviews?.length > 0">
+          <h3 class="review-title">Customer Reviews</h3>
+        
+          <mat-card *ngFor="let review of product?.reviews" class="review-card">
+            <mat-card-header>
+              <mat-card-title>{{ review.reviewerName }}</mat-card-title>
+              <mat-card-subtitle>{{ review.date | date:'mediumDate' }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <app-rating [rating]="review.rating"></app-rating>
+              <p class="comment">{{ review.comment }}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        </div>
 
       <div *ngIf="!isLoading && !product" class="error-state">
         <mat-icon>error_outline</mat-icon>

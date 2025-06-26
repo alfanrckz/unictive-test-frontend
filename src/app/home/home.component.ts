@@ -1,21 +1,22 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { Router } from '@angular/router';
+import { LoadingComponent } from '../shared/components/loading/loading.component';
+import { RatingComponent } from '../shared/components/rating/rating.component';
 import { Product } from '../shared/interfaces/product.interface';
-import { ProductService } from '../shared/services/product.service';
 import { AuthService } from '../shared/services/auth.service';
 import { NotificationService } from '../shared/services/notification.service';
-import { RatingComponent } from '../shared/components/rating/rating.component';
-import { LoadingComponent } from '../shared/components/loading/loading.component';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { ProductService } from '../shared/services/product.service';
 
 @Component({
   selector: 'app-home',
@@ -34,14 +35,16 @@ import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
     RatingComponent,
     LoadingComponent,
     FormsModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatInputModule
   ]
 })
 export class HomeComponent implements OnInit {
 
     carouselImages = [
-    'assets/images/5687924.jpg',
+    'assets/images/9742750.jpg',
     'assets/images/9950409.jpg',
+    'assets/images/6909821.jpg',
     'assets/images/1301.jpg',
   ];
 
@@ -49,6 +52,7 @@ export class HomeComponent implements OnInit {
   carouselInterval: any;
 
   products: Product[] = [];
+  filteredProducts: Product[] = [];
   searchQuery: string = '';
   isLoading = true;
   isGridView = true;
@@ -86,6 +90,7 @@ export class HomeComponent implements OnInit {
     this.productService.getProducts().subscribe({
       next: (response) => {
         this.products = response.products;
+        this.filteredProducts = [...this.products];
         this.isLoading = false;
       },
       error: (error) => {
@@ -98,16 +103,23 @@ export class HomeComponent implements OnInit {
 
   onSearch(): void {
   const query = this.searchQuery.toLowerCase().trim();
-  this.products = this.products.filter(p =>
+
+  if (!query) {
+    this.products = [...this.filteredProducts];
+    return;
+  }
+
+  this.products = this.filteredProducts.filter(p =>
     p.title.toLowerCase().includes(query) ||
     p.description.toLowerCase().includes(query)
   );
-  }
+}
+
 
   clearSearch(): void {
-    this.searchQuery = '';
-    this.products = [...this.products];
-  }
+  this.searchQuery = '';
+  this.products = [...this.filteredProducts];
+}
 
   viewProduct(id: number): void {
     this.router.navigate(['/product', id]);

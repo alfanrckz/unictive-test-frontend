@@ -1,31 +1,37 @@
-<mat-toolbar color="primary">
-      <span>E-commerce Showcase</span>
-      <span class="spacer"></span>
-      <button mat-button [matMenuTriggerFor]="userMenu">
-        <mat-icon>account_circle</mat-icon>
-        {{ currentUser?.firstName }} {{ currentUser?.lastName }}
-      </button>
-      <mat-menu #userMenu="matMenu">
-        <button mat-menu-item (click)="logout()">
-          <mat-icon>logout</mat-icon>
-          <span>Logout</span>
+    <mat-toolbar color="primary">
+        <span>E-commerce Showcase</span>
+        <mat-icon class="icon-logo">shopping_bag</mat-icon>
+        <span class="spacer"></span>
+        <button mat-button [matMenuTriggerFor]="userMenu">
+            <mat-icon>account_circle</mat-icon>
+            {{ currentUser?.firstName }} {{ currentUser?.lastName }}
         </button>
-    </mat-menu>
-</mat-toolbar>
-<!-- <mat-form-field appearance="outline" class="full-width">
-<mat-label>Search</mat-label>
-<input matInput [(ngModel)]="searchQuery" placeholder="Search posts">
-</mat-form-field> -->
+        <mat-menu #userMenu="matMenu">
+            <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+            </button>
+        </mat-menu>
+    </mat-toolbar>
 
-<!-- <div class="search-bar">
-  <mat-form-field appearance="outline" class="search-field">
-    <mat-label>Search products</mat-label>
-    <input matInput [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Search here..." />
-    <button *ngIf="searchQuery" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
-</div> -->
+    <div class="search-bar-sticky">
+    <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search products</mat-label>
+
+        <mat-icon matPrefix>search</mat-icon>
+
+        <input
+        matInput
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearch()"
+        placeholder="Search here..." />
+
+        <button *ngIf="searchQuery" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+        <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
+    </div>
+
 
     <div class="container">
     
@@ -63,9 +69,6 @@
           <mat-card *ngFor="let product of products" 
                     class="product-card" 
                     (click)="viewProduct(product.id)">
-            <!-- <div class="product-image" 
-                 [style.background-image]="'url(' + product.thumbnail + ')'">
-            </div> -->
 
             <div class="product-image">
                 <img [src]="product.thumbnail" [alt]="product.title" />
