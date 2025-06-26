@@ -11,6 +11,7 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
+  // Get all products default 200
   getProducts(limit: number = 200, skip: number = 0): Observable<ProductsResponse> {
     return this.http.get<ProductsResponse>(`${this.API_URL}/products?limit=${limit}&skip=${skip}`);
   }
