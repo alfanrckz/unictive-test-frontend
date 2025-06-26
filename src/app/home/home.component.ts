@@ -17,7 +17,6 @@ import { Product } from '../shared/interfaces/product.interface';
 import { AuthService } from '../shared/services/auth.service';
 import { NotificationService } from '../shared/services/notification.service';
 import { ProductService } from '../shared/services/product.service';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @Component({
   selector: 'app-home',
@@ -38,7 +37,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    InfiniteScrollModule
   ]
 })
 export class HomeComponent implements OnInit {
@@ -61,9 +59,11 @@ export class HomeComponent implements OnInit {
   currentUser = this.authService.getCurrentUser();
 
   limit = 30;
-skip = 0;
-isEndOfList = false;
-isLoadingMore = false;
+  skip = 0;
+  isEndOfList = false;
+  isLoadingMore = false;
+
+  isSearching = false;
 
   constructor(
     private productService: ProductService,
@@ -80,7 +80,7 @@ isLoadingMore = false;
   startCarousel() {
     this.carouselInterval = setInterval(() => {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.carouselImages.length;
-    }, 5000); // ganti gambar tiap 5 detik
+    }, 5000); 
   }
 
   nextSlide() {
@@ -93,16 +93,22 @@ isLoadingMore = false;
   }
 
 
-  loadProducts(initial = false): void {
+loadProducts(initial = false): void {
+  if (initial) {
+    this.isSearching = false;
+    this.skip = 0;
+    this.isEndOfList = false;
+    this.isLoading = true;
+  }
+
   if (this.isLoadingMore || this.isEndOfList) return;
 
   this.isLoadingMore = true;
-  if (initial) this.isLoading = true;
 
   this.productService.getProducts(this.limit, this.skip).subscribe({
     next: (response) => {
       const newProducts = response.products;
-      
+
       if (initial) {
         this.products = [...newProducts];
       } else {
@@ -113,14 +119,13 @@ isLoadingMore = false;
       this.skip += this.limit;
 
       if (newProducts.length < this.limit) {
-        this.isEndOfList = true; // tidak ada data lagi
+        this.isEndOfList = true;
       }
 
       this.isLoading = false;
       this.isLoadingMore = false;
     },
     error: (error) => {
-      console.error('Error loading products:', error);
       this.notificationService.showError('Failed to load products');
       this.isLoading = false;
       this.isLoadingMore = false;
@@ -128,35 +133,67 @@ isLoadingMore = false;
   });
 }
 
+
+
 onScroll(): void {
+  if (this.isSearching) return;
   const scrollPosition = window.innerHeight + window.scrollY;
-  const threshold = document.body.offsetHeight - 100; // ambil 100px sebelum ujung bawah
+  const threshold = document.body.offsetHeight - 100; 
 
   if (scrollPosition >= threshold) {
-    this.loadProducts(); // load more
+    this.loadProducts(); 
+  }
+}
+
+checkScrollTrigger(): void {
+  const scrollPosition = window.innerHeight + window.scrollY;
+  const threshold = document.body.offsetHeight - 100;
+
+  if (scrollPosition >= threshold) {
+    this.loadProducts();
   }
 }
 
 
-
-  onSearch(): void {
+onSearch(): void {
   const query = this.searchQuery.toLowerCase().trim();
 
-  if (!query) {
-    this.products = [...this.filteredProducts];
+  if (!query || query === '') {
+    this.isSearching = false;
+    this.loadProducts(true); 
     return;
   }
 
-  this.products = this.filteredProducts.filter(p =>
-    p.title.toLowerCase().includes(query) ||
-    p.description.toLowerCase().includes(query)
-  );
+  this.isLoading = true;
+
+  this.productService.searchProducts(query).subscribe({
+    next: (response) => {
+      this.products = [...response.products];
+      this.filteredProducts = [...response.products];
+      this.isLoading = false;
+      this.isEndOfList = true;
+    },
+    error: (error) => {
+      console.error('Error searching products:', error);
+      this.notificationService.showError('Failed to search products');
+      this.isLoading = false;
+    }
+  });
 }
 
 
-  clearSearch(): void {
+clearSearch(): void {
   this.searchQuery = '';
-  this.products = [...this.filteredProducts];
+  this.isSearching = false;
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(() => {
+    this.loadProducts(true);
+
+    setTimeout(() => {
+      this.checkScrollTrigger();
+    }, 200);
+  }, 0);
 }
 
   viewProduct(id: number): void {
